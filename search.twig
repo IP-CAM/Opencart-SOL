@@ -5,68 +5,12 @@
     <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
     {% endfor %}
   </ul>
-  <div class="row"><div class="col-order">{{ column_left }}
-    {% if column_left and column_right %}
-    {% set class = 'col-sm-6' %}
-    {% elseif column_left or column_right %}
-    {% set class = 'col-md-9 col-sm-12' %}
-    {% else %}
-    {% set class = 'col-sm-12' %}
-    {% endif %}
-    <div id="content" class="{{ class }}">{{ content_top }}
-      <h1>{{ heading_title }}</h1>
-      <label class="control-label" for="input-search">{{ entry_search }}</label>
-      <div class="row">
-        <div class="col-sm-4">
-          <input type="text" name="search" value="{{ search }}" placeholder="{{ text_keyword }}" id="input-search" class="form-control" />
-        </div>
-        <div class="col-sm-3">
-          <select name="category_id" class="form-control">
-            <option value="0">{{ text_category }}</option>
-            {% for category_1 in categories %}
-            {% if category_1.category_id == category_id %}
-            <option value="{{ category_1.category_id }}" selected="selected">{{ category_1.name }}</option>
-            {% else %}
-            <option value="{{ category_1.category_id }}">{{ category_1.name }}</option>
-            {% endif %}
-            {% for category_2 in category_1.children %}
-            {% if category_2.category_id == category_id %}
-            <option value="{{ category_2.category_id }}" selected="selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_2.name }}</option>
-            {% else %}
-            <option value="{{ category_2.category_id }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_2.name }}</option>
-            {% endif %}
-            {% for category_3 in category_2.children %}
-            {% if category_3.category_id == category_id %}
-            <option value="{{ category_3.category_id }}" selected="selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_3.name }}</option>
-            {% else %}
-            <option value="{{ category_3.category_id }}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ category_3.name }}</option>
-            {% endif %}
-            {% endfor %}
-            {% endfor %}
-            {% endfor %}
-          </select>
-        </div>
-        <div class="col-sm-3">
-          <label class="checkbox-inline">
-            {% if sub_category %}
-            <input type="checkbox" name="sub_category" value="1" checked="checked" />
-            {% else %}
-            <input type="checkbox" name="sub_category" value="1" />
-            {% endif %}
-            {{ text_sub_category }}</label>
-        </div>
-      </div>
-      <p>
-        <label class="checkbox-inline">
-          {% if description %}
-          <input type="checkbox" name="description" value="1" id="description" checked="checked" />
-          {% else %}
-          <input type="checkbox" name="description" value="1" id="description" />
-          {% endif %}
-          {{ entry_description }}</label>
-      </p>
-      <input type="button" value="{{ button_search }}" id="button-search" class="btn btn-primary" />
-      <h2>{{ text_search }}</h2>
+  <div >
+      	{% if  products == false %}
+      	<p>Sorry, No products found that matches {{ entry_search }}</p>
+      	{% endif %}
+  </div>
+      
       <div class="custom-category">
 			{% if products %}
 				
@@ -105,7 +49,7 @@
 						{% else %}
 							<label for="input-sort">{{ text_sort }}</label>
 							<select id="input-sort" class="form-control" onchange="location = this.value;">
-								{% for sorts in sorts %}	
+								{% for sorts in sorts %}
 									{% if sorts.value == '%s-%s'|format(sort, order) %}
 										<option value="{{ sorts.href }}" selected="selected">{{ sorts.text }}</option>
 									{% else %}
@@ -228,6 +172,10 @@
 																		
 												
 											<h4 class="product-name"><a href="{{ product.href }}">{{ product.name }}</a></h4>
+ 											{% if product.sku %}
+                        <h4 class="product-sku"><a href="{{ product.href }}">SKU:&nbsp;{{ product.sku }}</a></h4>
+                      {% endif %}
+
 											<div class="ratings">
 													<div class="rating-box">
 													{% for i in 0..5 %}
@@ -238,7 +186,6 @@
 													{% endfor %}
 													</div>
 												</div>
-											
 											{% if product.price %}
 												<div class="price-box">
 												{% if not product.special %}
