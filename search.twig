@@ -14,7 +14,13 @@
     {% set class = 'col-sm-12' %}
     {% endif %}
     <div id="content" class="{{ class }}">{{ content_top }}
-      <h1>{{ heading_title }}</h1>
+    	{% if not products %}
+				<h1> Sorry, no results found for your {{ heading_title }}</h1>
+		{% else %}		
+				 <h1>{{ heading_title }}</h1>
+		{% endif %}
+		
+     
       
       <div class="custom-category">
 			{% if products %}
